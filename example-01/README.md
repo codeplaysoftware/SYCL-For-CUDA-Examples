@@ -5,25 +5,25 @@ This trivial example can be used to compare a simple vector addition in
 CUDA to an equivalent implementation in SYCL for CUDA.
 The aim of the example is also to highlight how to build an application
 with SYCL for CUDA using DPC++ support, for which an example CMakefile is
-provided.a
+provided.
 For detailed documentation on how to migrate from CUDA to SYCL, see 
 [SYCL For CUDA Developers](https://developer.codeplay.com/products/computecpp/ce/guides/sycl-for-cuda-developers).
 
-Note currently the CUDA backend doesnt support 
+Note currently the CUDA backend does not support  the
 [USM](https://github.com/intel/llvm/blob/sycl/sycl/doc/extensions/USM/USM.adoc) 
 extension, so we use `sycl::buffer` and `sycl::accessors` instead.
 
 Pre-requisites
 ---------------
 
-#. An installation of DPC++ with CUDA support, see [Get Started Guide](https://github.com/codeplaysoftware/sycl-for-cuda/blob/cuda/sycl/doc/GetStartedWithSYCLCompiler.md) for details on how to build it.
+#. An installation of DPC++ with CUDA support, see [Getting Started Guide](https://github.com/codeplaysoftware/sycl-for-cuda/blob/cuda/sycl/doc/GetStartedWithSYCLCompiler.md) for details on how to build it.
 ##. The branch used for this example is cuda-dev. Note this branch is in active
 development and your mileage may vary.
 
 Building the example
 ---------------------
 
-1. mkdir build; cd build
+1. mkdir build && cd build
 2. cmake ../ -DSYCL_ROOT=/path/to/dpc++/install \
     -DCMAKE_CXX_COMPILER=/path/to/dpc++/install/bin/clang++
 3. make -j 8
@@ -82,7 +82,7 @@ The SYCL queue created later on uses a custom `CUDASelector` to select
 a CUDA device, or bail out if its not there. 
 The CUDA selector uses the `info::device::driver_version` to identify the 
 device exported by the CUDA backend.
-This is important, 'cos if the NVIDIA OpenCL implementation is available on the
+This is important, because if the NVIDIA OpenCL implementation is available on the
 system, it will be reported as another SYCL device, so checking the driver 
 version is the best way to differentiate between the two.
 
