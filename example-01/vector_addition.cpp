@@ -1,4 +1,6 @@
 /**
+ * SYCL FOR CUDA : Vector Addition Example
+ *
  * Copyright 2020 Codeplay Software Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +15,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *
- **** SYCL for CUDA Vector Addition Example
+ * @File: vector_addition.cpp
  */
 
 #include <algorithm>
