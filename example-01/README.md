@@ -16,9 +16,11 @@ extension, so we use `sycl::buffer` and `sycl::accessors` instead.
 Pre-requisites
 ---------------
 
-#. An installation of DPC++ with CUDA support, see [Getting Started Guide](https://github.com/codeplaysoftware/sycl-for-cuda/blob/cuda/sycl/doc/GetStartedWithSYCLCompiler.md) for details on how to build it.
-##. The branch used for this example is cuda-dev. Note this branch is in active
-development and your mileage may vary.
+You would need an installation of DPC++ with CUDA support, 
+see [Getting Started Guide](https://github.com/codeplaysoftware/sycl-for-cuda/blob/cuda/sycl/doc/GetStartedWithSYCLCompiler.md) 
+for details on how to build it.
+
+The example has been built on CMake 3.13.3 and nvcc 10.1.243.
 
 Building the example
 ---------------------
