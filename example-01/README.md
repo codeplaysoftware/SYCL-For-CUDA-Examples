@@ -25,10 +25,12 @@ The example has been built on CMake 3.13.3 and nvcc 10.1.243.
 Building the example
 ---------------------
 
-1. mkdir build && cd build
-2. cmake ../ -DSYCL_ROOT=/path/to/dpc++/install \
+```sh
+$ mkdir build && cd build`
+$ cmake ../ -DSYCL_ROOT=/path/to/dpc++/install \
     -DCMAKE_CXX_COMPILER=/path/to/dpc++/install/bin/clang++
-3. make -j 8
+$ make -j 8
+```
 
 This should produce two binaries, `vector_addition` and `sycl_vector_addition`.
 The former is the unmodified CUDA source and the second is the SYCL for CUDA
