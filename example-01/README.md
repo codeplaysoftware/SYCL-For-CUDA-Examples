@@ -56,8 +56,8 @@ The provided CMake build script uses the native CUDA support to build the
 CUDA application. It also serves as a check that all CUDA requirements
 on the system are available (such as an installation of CUDA on the system).
 
-Two flags are required: -DSYCL\_ROOT, which must point to the place where the
-DPC++ compiler is installed, and -DCMAKE_CXX_COMPILER , which must point to
+Two flags are required: `-DSYCL_ROOT`, which must point to the place where the
+DPC++ compiler is installed, and `-DCMAKE_CXX_COMPILER`, which must point to
 the Clang compiler provided by DPC++. 
 
 The CMake target `sycl_vector_addition` will build the SYCL version of
