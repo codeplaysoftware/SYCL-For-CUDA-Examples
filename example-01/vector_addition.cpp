@@ -24,10 +24,10 @@
 
 #include <CL/sycl.hpp>
 
-class CUDASelector : public cl::sycl::device_selector {
+class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const cl::sycl::device &Device) const override {
-    using namespace cl::sycl::info;
+  int operator()(const sycl::device &Device) const override {
+    using namespace sycl::info;
 
     const std::string DriverVersion = Device.get_info<device::driver_version>();
 

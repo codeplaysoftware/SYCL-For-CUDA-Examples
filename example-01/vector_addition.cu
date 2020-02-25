@@ -1,3 +1,6 @@
+// Original source reproduced unmodified here from: 
+// https://github.com/olcf/vector_addition_tutorials/blob/master/CUDA/vecAdd.cu
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
