@@ -79,15 +79,15 @@ SYCL Vector Addition code
 The vector addition example uses a simple approach to implement with a plain
 kernel that performs the add. Vectors are stored directly in buffers.
 Data is initialized on the host using host accessors. 
-This approach avoids creating unnecesary storage on the host, and facilitates
+This approach avoids creating unnecessary storage on the host, and facilitates
 the SYCL runtime to use optimized memory paths.
 
 The SYCL queue created later on uses a custom `CUDASelector` to select
 a CUDA device, or bail out if its not there. 
 The CUDA selector uses the `info::device::driver_version` to identify the 
 device exported by the CUDA backend.
-This is important, because if the NVIDIA OpenCL implementation is available on the
-system, it will be reported as another SYCL device, so checking the driver 
+If the NVIDIA OpenCL implementation is available on the
+system, it will be reported as another SYCL device. The driver 
 version is the best way to differentiate between the two.
 
 The command group is created as a lambda expression that takes the
@@ -99,6 +99,5 @@ The command group is submitted to a queue which will convert all the
 operations into CUDA commands that will be executed once the host accessor
 is encountered later on.
 
-The host accessor will trigger a copy of the data back to the host, an
+The host accessor will trigger a copy of the data back to the host, and
 then the values are reduced into a single sum element.
-
