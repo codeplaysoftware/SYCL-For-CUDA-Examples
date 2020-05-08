@@ -44,10 +44,10 @@ public:
 int main() {
   using namespace sycl;
 
-  const size_t WIDTH = 1024;
-  const size_t HEIGHT = 1024;
-  const float ALPHA = 1.0f;
-  const float BETA = 0.0f;
+  constexpr size_t WIDTH = 1024;
+  constexpr size_t HEIGHT = 1024;
+  constexpr float ALPHA = 1.0f;
+  constexpr float BETA = 0.0f;
 
   std::vector<float> h_A(WIDTH * HEIGHT), h_B(WIDTH * HEIGHT),
       h_C(WIDTH * HEIGHT);
@@ -82,9 +82,9 @@ int main() {
       h.interop_task([=](sycl::interop_handler ih) {
         cublasSetStream(handle, ih.get_queue<backend::cuda>());
 
-        float *cuA = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_A));
-        float *cuB = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_B));
-        float *cuC = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_C));
+        auto cuA = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_A));
+        auto cuB = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_B));
+        auto cuC = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_C));
 
         CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                                 WIDTH, &ALPHA, cuA, WIDTH, cuB, WIDTH, &BETA,
