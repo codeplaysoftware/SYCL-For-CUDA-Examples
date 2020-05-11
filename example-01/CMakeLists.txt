@@ -11,7 +11,7 @@ endif(NOT SYCL_ROOT)
 set(SYCL_INCLUDE_DIR "${SYCL_ROOT}/lib/clang/11.0.0/include/")
 set(SYCL_LIB "${SYCL_ROOT}/lib/libsycl.so")
 set(SYCL_FLAGS "-fsycl" 
-      "-fsycl-targets=nvptx64-nvidia-cuda-sycldevice,spir64-unknown-linux-sycldevice"
+      "-fsycl-targets=nvptx64-nvidia-cuda-sycldevice" 
       "-fsycl-unnamed-lambda")
 
 # Build the CUDA code
