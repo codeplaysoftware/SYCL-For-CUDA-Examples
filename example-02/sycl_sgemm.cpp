@@ -24,8 +24,6 @@ void inline checkCudaErrorMsg(cudaError status, const char *msg) {
   }
 }
 
-
-
 class CUDASelector : public sycl::device_selector {
 public:
   int operator()(const sycl::device &Device) const override {
@@ -98,8 +96,9 @@ int main() {
   const bool allEqual =
       std::all_of(std::begin(h_C), std::end(h_C), [&i](float num) {
         ++i;
-        if (num != 1)
+        if (num != 1) {
           std::cout << i << " Not one : " << num << std::endl;
+        }
         return num == 1;
       });
 
