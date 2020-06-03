@@ -26,8 +26,9 @@ __global__ void vecAdd(double *a, double *b, double *c, int n) {
   int id = blockIdx.x * blockDim.x + threadIdx.x;
 
   // Make sure we do not go out of bounds
-  if (id < n)
+  if (id < n) {
     c[id] = a[id] + b[id];
+  }
 }
 
 int main(int argc, char *argv[]) {
