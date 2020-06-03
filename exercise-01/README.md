@@ -1,7 +1,7 @@
 Exercise 01: SYCL interop
 -------------------------------
 
-The in this exercise, you must implement an `interop_task` to let a `SYCL` application call `cuBLAS`.
+In this exercise, you must implement an `interop_task` to let a `SYCL` application call `cuBLAS`.
 This application will perform a vector/matrix multiplication using the `cublasSgemv` routine in `cuBLAS`.
 A CUDA version of the application is provided, demonstrating how to call `cublasSgemv`.
 
