@@ -16,7 +16,7 @@ public:
     const std::string DriverVersion = Device.get_info<device::driver_version>();
 
     if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
-      std::cout << " CUDA device found " << std::endl;
+      std::cout << " CUDA device found \n";
       return 1;
     };
     return -1;
@@ -41,9 +41,9 @@ int main(int argc, char *argv[]) {
   // Create a SYCL context for interoperability with CUDA Runtime API
   // This is temporary until the property extension is implemented
   const bool UsePrimaryContext = true;
-  sycl::device dev{CUDASelector().select_device()};
-  sycl::context myContext{dev, {}, UsePrimaryContext};
-  sycl::queue myQueue{myContext, dev};
+  device dev{CUDASelector().select_device()};
+  context myContext{dev, {}, UsePrimaryContext};
+  queue myQueue{myContext, dev};
 
   {
     buffer<double> bA{range<1>(n)};
@@ -51,13 +51,13 @@ int main(int argc, char *argv[]) {
     buffer<double> bC{range<1>(n)};
 
     {
-      auto h_a = bA.get_access<access::mode::write>();
-      auto h_b = bB.get_access<access::mode::write>();
+      auto hA = bA.get_access<access::mode::write>();
+      auto hB = bB.get_access<access::mode::write>();
 
       // Initialize vectors on host
       for (int i = 0; i < n; i++) {
-        h_a[i] = sin(i) * sin(i);
-        h_b[i] = cos(i) * cos(i);
+        hA[i] = sin(i) * sin(i);
+        hB[i] = cos(i) * cos(i);
       }
     }
 
@@ -68,28 +68,29 @@ int main(int argc, char *argv[]) {
       auto accC = bC.get_access<access::mode::write>(h);
 
       h.interop_task([=](interop_handler ih) {
-        auto d_a = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accA));
-        auto d_b = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accB));
-        auto d_c = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accC));
+        auto dA = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accA));
+        auto dB = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accB));
+        auto dC = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accC));
 
         int blockSize, gridSize;
         // Number of threads in each thread block
         blockSize = 1024;
         // Number of thread blocks in grid
-        gridSize = (int)ceil((float)n / blockSize);
+        gridSize = static_cast<int>(ceil(static_cast<float>(n) / blockSize));
         // Call the CUDA kernel directly from SYCL
-        vecAdd<<<gridSize, blockSize>>>(d_a, d_b, d_c, n);
+        vecAdd<<<gridSize, blockSize>>>(dA, dB, dC, n);
       });
     });
 
     {
-     auto h_c = bC.get_access<access::mode::read>();
+     auto hC = bC.get_access<access::mode::read>();
      // Sum up vector c and print result divided by n, this should equal 1 within
      // error
      double sum = 0;
-      for (int i = 0; i < n; i++)
-        sum += h_c[i];
-      printf("final result: %f\n", sum / n);
+     for (int i = 0; i < n; i++) {
+        sum += hC[i];
+     }
+      std::cout << "Final result " << sum / n << std::endl;
     }
   }
 

@@ -14,7 +14,7 @@ Pre-requisites
 ---------------
 
 You would need an installation of DPC++ with CUDA support, 
-see [Getting Started Guide](https://github.com/intel/llvm/doc/GetStartedWithSYCLCompiler.md) 
+see [Getting Started Guide](https://github.com/intel/llvm/blob/sycl/sycl/doc/GetStartedGuide.md#build-dpc-toolchain-with-support-for-nvidia-cuda)
 for details on how to build it.
 
 The example is built using Makefiles, since there is no support yet on
@@ -24,7 +24,7 @@ Building the example
 ---------------------
 
 ```sh
-$ SYCL_ROOT=/path/to/dpcpp  make  
+$ SYCL_ROOT=/path/to/dpcpp   make  
 ```
 
 This compiles the SYCL code with the LLVM CUDA support, and generates
@@ -42,7 +42,7 @@ The path to `libsycl.so` and the PI plugins must be in `LD_LIBRARY_PATH`.
 A simple way of running the example is as follows:
 
 ```
-$ LD_LIBRARY_PATH=/path/to/dpcpp/lib  ./vec_add.exe
+$ LD_LIBRARY_PATH=/path/to/dpcpp/lib:$LD_LIBRARY_PATH  ./vec_add.exe
 ```
 
 

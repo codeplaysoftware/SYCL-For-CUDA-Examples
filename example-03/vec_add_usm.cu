@@ -12,7 +12,7 @@ public:
     const std::string DriverVersion = Device.get_info<device::driver_version>();
 
     if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
-      std::cout << " CUDA device found " << std::endl;
+      std::cout << " CUDA device found \n";
       return 1;
     };
     return -1;
@@ -41,33 +41,31 @@ int main(int argc, char *argv[]) {
   // Create a SYCL context for interoperability with CUDA Runtime API
   // This is temporary until the property extension is implemented
   const bool UsePrimaryContext = true;
-  sycl::device dev{CUDASelector().select_device()};
-  sycl::context myContext{dev, {}, UsePrimaryContext};
-  sycl::queue myQueue{myContext, dev};
+  device dev{CUDASelector().select_device()};
+  context myContext{dev, {}, UsePrimaryContext};
+  queue myQueue{myContext, dev};
 
   // Allocate memory for each vector on host
-  double* d_a = (double *)malloc_shared(bytes, myQueue);
-  double* d_b = (double *)malloc_shared(bytes, myQueue);
-  double* d_c = (double *)malloc_shared(bytes, myQueue);
+  auto d_A = reinterpret_cast<double*>(malloc_shared(bytes, myQueue));
+  auto d_B = reinterpret_cast<double*>(malloc_shared(bytes, myQueue));
+  auto d_C = reinterpret_cast<double*>(malloc_shared(bytes, myQueue));
 
   // Initialize vectors on host
   for (int i = 0; i < n; i++) {
-    d_a[i] = sin(i) * sin(i);
-    d_b[i] = cos(i) * cos(i);
+    d_A[i] = sin(i) * sin(i);
+    d_B[i] = cos(i) * cos(i);
   }
 
   myQueue.submit([&](handler& h) {
       h.interop_task([=](interop_handler ih) {
-        int blockSize, gridSize;
-
         // Number of threads in each thread block
-        blockSize = 1024;
+        int blockSize = 1024;
 
         // Number of thread blocks in grid
-        gridSize = (int)ceil((float)n / blockSize);
+        int gridSize = static_cast<int>(ceil(static_cast<float>(n) / blockSize));
 
         // Execute the kernel
-        vecAdd<<<gridSize, blockSize>>>(d_a, d_b, d_c, n);
+        vecAdd<<<gridSize, blockSize>>>(d_A, d_B, d_C, n);
         });
   });
 
@@ -76,13 +74,14 @@ int main(int argc, char *argv[]) {
   // Sum up vector c and print result divided by n, this should equal 1 within
   // error
   double sum = 0;
-  for (int i = 0; i < n; i++)
-    sum += d_c[i];
-  printf("final result: %f\n", sum / n);
+  for (int i = 0; i < n; i++) {
+    sum += d_C[i];
+  }
+  std::cout << "Final result " << sum / n << std::endl;
 
-  sycl::free(d_a, myContext);
-  sycl::free(d_b, myContext);
-  sycl::free(d_c, myContext);
+  free(d_A, myContext);
+  free(d_B, myContext);
+  free(d_C, myContext);
 
   return 0;
 }
