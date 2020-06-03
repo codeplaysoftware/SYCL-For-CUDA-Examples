@@ -9,7 +9,7 @@ Requirements
 ==============
 
 Requires CMake 3.17 to configure (makes use of FindCUDAToolkit for simplicity)
-Example is meant to be build and executed with DPC++ compiler.
+This exercise must be compiled and executed with the DPC++ compiler.
 It is expected that you have read at least example-02 before attempting this exercise.
 
 
@@ -32,7 +32,7 @@ Then run
 make
 ```
 
-to build the example
+to build the exercise
 
 Exercise
 =========
