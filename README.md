@@ -9,3 +9,9 @@ experimental support for CUDA in the DPC++ SYCL implementation.
 
 CUDA is a registered trademark of NVIDIA Corporation
 SYCL is a trademark of the Khronos Group Inc
+
+Docker Image
+-------------
+
+There is a docker image available with all the examples and the required
+environment set up, see https://hub.docker.com/r/ruyman/dpcpp_cuda_examples.
