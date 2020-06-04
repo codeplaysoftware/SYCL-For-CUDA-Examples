@@ -51,7 +51,6 @@ int main() {
       h_C(WIDTH * HEIGHT);
 
   std::cout << "Size: " << h_C.size() << std::endl;
-  float *d_A, *d_B, *d_C;
 
   // A is an identity matrix
   std::fill(std::begin(h_A), std::end(h_A), 0.0f);

@@ -43,7 +43,7 @@ The path to `libsycl.so` and the PI plugins must be in `LD_LIBRARY_PATH`.
 A simple way of running the app is as follows:
 
 ```
-$ LD_LIBRARY_PATH=$HOME/open-source/sycl4cuda/lib  ./sycl_vector_addition
+$ LD_LIBRARY_PATH=/path/to/dpc++/install/lib ./sycl_vector_addition
 ```
 
 Note the `SYCL_BE` env variable is not required, since we use a custom

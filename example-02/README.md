@@ -9,8 +9,7 @@ Requirements
 ==============
 
 Requires CMake 3.17 to configure (makes use of FindCUDAToolkit for simplicity)
-Example is meant to be build and executed with DPC++ compiler.
-
+This example must be compiled and executed with the DPC++ compiler.
 
 Building the example
 =====================
