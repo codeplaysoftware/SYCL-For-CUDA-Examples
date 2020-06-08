@@ -15,3 +15,21 @@ Docker Image
 
 There is a docker image available with all the examples and the required
 environment set up, see https://hub.docker.com/r/ruyman/dpcpp_cuda_examples.
+
+If you have nvidia-docker, you can simply pull the image and run it to build
+the examples:
+
+```sh
+$ sudo docker run --gpus all -it ruyman/dpcpp_cuda_examples
+```
+
+Once inside the docker image, navigate to /home/examples/ to find a clone 
+of this repo. Make sure to pull the latest changes:
+
+```sh
+$ cd /home/examples/SYCL-For-CUDA-Examples
+$ git pull
+```
+
+Refer to each example and/or exercise for detailed instructions on how 
+to run it.
