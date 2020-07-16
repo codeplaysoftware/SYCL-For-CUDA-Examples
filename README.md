@@ -26,14 +26,14 @@ Getting Started
 Once docker and the NVIDIA Container Toolkit are installed, we can create a new container and run the examples witin it.
 
 ``` sh
-sudo docker run --gpus all -it ruyman/dpcpp_cuda_examples
+$ sudo docker run --gpus all -it ruyman/dpcpp_cuda_examples
 ```
 
 Once inside the docker image, navigate to `/home/examples/` to find a local clone of this repo. Make sure to pull the latest changes:
 
 ``` sh
-cd /home/examples/SYCL-For-CUDA-Examples
-git pull
+$ cd /home/examples/SYCL-For-CUDA-Examples
+$ git pull
 ```
 
 Refer to each example and/or exercise for detailed instructions on how  to run it.
