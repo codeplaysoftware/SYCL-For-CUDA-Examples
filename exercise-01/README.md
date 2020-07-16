@@ -21,10 +21,10 @@ It is expected that you have read at least example-02 before attempting this exe
 Building the exercise
 =====================
 
-``` 
-mkdir build && cd build
-cmake ../
-make -j 8
+``` sh
+$ mkdir build && cd build
+$ cmake ../
+$ make -j 8
 ```
 
 Exercise

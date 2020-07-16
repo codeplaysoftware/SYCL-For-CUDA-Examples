@@ -16,10 +16,10 @@ root README file.
 Building the example
 =====================
 
-``` 
-mkdir build && cd build
-cmake ../
-make -j 8
+``` sh
+$ mkdir build && cd build
+$ cmake ../
+$ make -j 8
 ```
 
 Example

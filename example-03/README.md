@@ -25,7 +25,7 @@ Building the example
 ---------------------
 
 ``` sh
-make  
+$ make  
 ```
 
 This compiles the SYCL code with the LLVM CUDA support, and generates two 
@@ -38,8 +38,8 @@ SYCL Runtime headers.
 Running the example
 --------------------
 
-``` 
-./vec_add.exe
+``` sh 
+$ ./vec_add.exe
 ```
 
 Calling CUDA kernels from SYCL

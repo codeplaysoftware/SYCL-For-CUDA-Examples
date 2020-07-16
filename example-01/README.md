@@ -22,9 +22,9 @@ Building the example
 ---------------------
 
 ``` sh
-mkdir build && cd build
-cmake ../ -DSYCL_ROOT=${SYCL_ROOT_DIR} -DCMAKE_CXX_COMPILER=${SYCL_ROOT_DIR}/bin/clang++
-make -j 8
+$ mkdir build && cd build
+$ cmake ../ -DSYCL_ROOT=${SYCL_ROOT_DIR} -DCMAKE_CXX_COMPILER=${SYCL_ROOT_DIR}/bin/clang++
+$ make -j 8
 ```
 
 This should produce two binaries, `vector_addition` and `sycl_vector_addition` .
@@ -35,8 +35,8 @@ Running the example
 --------------------
 
 ``` 
-./sycl_vector_addition
-./vector_addition
+$ ./sycl_vector_addition
+$ ./vector_addition
 ```
 
 CMake Build script
@@ -84,7 +84,7 @@ The command group is created as a lambda expression that takes the
 `get_access` method. Finally the `parallel_for` with the SYCL kernel is invoked
 as usual.
 
-The command group is submitted to a queue which will convert all the operations
+The command group is subm$ itted to a queue which will convert all the operations
 into CUDA commands that will be executed once the host accessor is encountered
 later on.
 
