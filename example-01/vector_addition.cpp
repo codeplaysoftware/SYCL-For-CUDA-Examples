@@ -78,8 +78,8 @@ int main(int argc, char *argv[]) {
   myQueue.submit(cg);
 
   {
-    const auto write_t = sycl::access::mode::read;
-    auto h_c = bufC.get_access<write_t>();
+    const auto read_t = sycl::access::mode::read;
+    auto h_c = bufC.get_access<read_t>();
     double sum = 0.0f;
     for (int i = 0; i < N; i++) {
       sum += h_c[i];
