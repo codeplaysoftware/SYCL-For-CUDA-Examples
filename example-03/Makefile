@@ -8,7 +8,7 @@ CUDAFLAGS=--cuda-gpu-arch=sm_30
 
 CXXFLAGS=-std=c++17 ${CUDAFLAGS} -I${SYCL_INCLUDE} -g
 
-LIBS=-L${SYCL_ROOT_DIR}/include/lib -lOpenCL -lsycl -L${CUDA_ROOT_DIR}/lib64 -lcudart
+LIBS=-L${SYCL_ROOT_DIR}/lib -lOpenCL -lsycl -L${CUDA_ROOT_DIR}/lib64 -lcudart
 
 default: vec_add.exe usm_vec_add.exe
 

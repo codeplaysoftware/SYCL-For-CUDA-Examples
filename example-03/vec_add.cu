@@ -39,11 +39,8 @@ int main(int argc, char *argv[]) {
   // Size of vectors
   int n = 100000;
 
-  // Create a SYCL context for interoperability with CUDA Runtime API
-  // This is temporary until the property extension is implemented
-  const bool UsePrimaryContext = true;
   device dev{CUDASelector().select_device()};
-  context myContext{dev, {}, UsePrimaryContext};
+  context myContext{dev};
   queue myQueue{myContext, dev};
 
   {

@@ -12,21 +12,14 @@
 
 void inline checkCudaErrorMsg(cublasStatus_t status, const char *msg) {
   if (status != CUBLAS_STATUS_SUCCESS) {
-    std::cout << "CUBLAS:" << msg << " - " << status << std::endl;
+    std::cout << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
 
 void inline checkCudaErrorMsg(cudaError status, const char *msg) {
   if (status != CUDA_SUCCESS) {
-    std::cout << "CUDA: " << msg << " - " << status << std::endl;
-    exit(EXIT_FAILURE);
-  }
-}
-
-void inline checkCudaErrorMsg(CUresult status, const char *msg) {
-  if (status != CUDA_SUCCESS) {
-    std::cout << "CUDA: " << msg << " - " << status << std::endl;
+    std::cout << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
@@ -83,12 +76,12 @@ int main() {
       auto d_B = b_B.get_access<sycl::access::mode::read>(h);
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
-      h.codeplay_host_task([=](sycl::interop_handle ih) {
-        cuCtxSetCurrent(ih.get_native_context<backend::cuda>());
-        cublasSetStream(handle, ih.get_native_queue<backend::cuda>());
-        auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_A));
-        auto cuB = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_B));
-        auto cuC = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_C));
+      h.interop_task([=](sycl::interop_handler ih) {
+        cublasSetStream(handle, ih.get_queue<backend::cuda>());
+
+        auto cuA = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_A));
+        auto cuB = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_B));
+        auto cuC = reinterpret_cast<float *>(ih.get_mem<backend::cuda>(d_C));
 
         CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                                 WIDTH, &ALPHA, cuA, WIDTH, cuB, WIDTH, &BETA,
