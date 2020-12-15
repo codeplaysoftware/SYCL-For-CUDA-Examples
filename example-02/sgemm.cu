@@ -15,7 +15,7 @@ void inline checkCudaErrorMsg(cublasStatus_t status, const char *msg) {
 }
 
 void inline checkCudaErrorMsg(cudaError status, const char *msg) {
-  if (status != CUDA_SUCCESS) {
+  if (status != cudaSuccess) {
     std::cout << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
