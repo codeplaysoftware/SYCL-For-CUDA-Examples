@@ -40,8 +40,6 @@ public:
 };
 
 int main() {
-  using namespace sycl;
-
   constexpr size_t WIDTH = 1024;
   constexpr size_t HEIGHT = 1024;
   constexpr float ALPHA = 1.0f;
@@ -67,11 +65,11 @@ int main() {
   CHECK_ERROR(cublasCreate(&handle));
 
   {
-    buffer<float, 2> b_A{h_A.data(), range<2>{WIDTH, HEIGHT}};
-    buffer<float, 2> b_B{h_B.data(), range<2>{WIDTH, HEIGHT}};
-    buffer<float, 2> b_C{h_C.data(), range<2>{WIDTH, HEIGHT}};
+    sycl::buffer<float, 2> b_A{h_A.data(), range<2>{WIDTH, HEIGHT}};
+    sycl::buffer<float, 2> b_B{h_B.data(), range<2>{WIDTH, HEIGHT}};
+    sycl::buffer<float, 2> b_C{h_C.data(), range<2>{WIDTH, HEIGHT}};
 
-    q.submit([&](handler &h) {
+    q.submit([&](sycl::handler &h) {
       auto d_A = b_A.get_access<sycl::access::mode::read>(h);
       auto d_B = b_B.get_access<sycl::access::mode::read>(h);
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);

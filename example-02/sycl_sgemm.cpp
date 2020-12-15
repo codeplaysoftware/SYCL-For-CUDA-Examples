@@ -12,21 +12,21 @@
 
 void inline checkCudaErrorMsg(cublasStatus_t status, const char *msg) {
   if (status != CUBLAS_STATUS_SUCCESS) {
-    std::cout << "CUBLAS:" << msg << " - " << status << std::endl;
+    std::cout << "ERROR CUBLAS:" << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
 
 void inline checkCudaErrorMsg(cudaError status, const char *msg) {
-  if (status != CUDA_SUCCESS) {
-    std::cout << "CUDA: " << msg << " - " << status << std::endl;
+  if (status != cudaSuccess) {
+    std::cout << "ERROR CUDA: " << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
 
 void inline checkCudaErrorMsg(CUresult status, const char *msg) {
   if (status != CUDA_SUCCESS) {
-    std::cout << "CUDA: " << msg << " - " << status << std::endl;
+    std::cout << "ERROR CUDA: " << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
