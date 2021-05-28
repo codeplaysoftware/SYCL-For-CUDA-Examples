@@ -83,7 +83,6 @@ int main(int argc, char *argv[]) {
           ih.get_native_mem<sycl::backend::cuda>(local_acc));
       MPI_Scatter(cuda_ptr, local_size, MPI_DOUBLE, cuda_local_ptr, local_size,
                   MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      );
     });
   };
   q.submit(ht);
