@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
   }
   /* -------------------------------------------------------------------------------------------
     Create an SYCL interoperability with CUDA to scatter the data each batch A,
-  B, C among the two MPI process
+  B among the two MPI process
   --------------------------------------------------------------------------------------------*/
   start_time = MPI_Wtime();
   auto ht_a = [&](sycl::handler &h) {
