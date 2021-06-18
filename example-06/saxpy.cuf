@@ -46,6 +46,7 @@ end interface
   write(*,*) 'N ', N
 
   write (*,*) 'SYCL version: '
+  y = 2.0;
   call saxpy_call(x, y, a, N);
   write(*,*) 'Max error: ', maxval(abs(y-4.0))
 

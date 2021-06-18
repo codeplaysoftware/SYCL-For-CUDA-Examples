@@ -11,11 +11,14 @@ void saxpy_sycl_cuda_wrapper (float* x, float* y, float a, int N) {
 	sycl::queue q{c, c.get_devices()[0]};
 	{
 		sycl::buffer bX {x, sycl::range<1>(N)};
+		sycl::buffer bY {y, sycl::range<1>(N)};
 
 		q.submit([&](sycl::handler& h) {
 			auto aX = bX.get_access<sycl::access::mode::read_write>(h);
-			h.single_task([=]() {
-				aX[0] = 3.f;
+			auto aY = bY.get_access<sycl::access::mode::read_write>(h);
+			h.parallel_for<class saxpy_kernel>(sycl::range<1>(N), [=](sycl::id<1> id) {
+				if (id[0] < N) 
+					aY[id] = aX[id] * a + aY[id];
 			});
 		});
 
