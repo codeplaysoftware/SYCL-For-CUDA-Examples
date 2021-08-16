@@ -1,4 +1,4 @@
-CUDA Frotran and SYCL integration
+CUDA Fortran and SYCL integration
 ======================================
 
 This directory shows an example of how to call a SYCL function
