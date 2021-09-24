@@ -13,8 +13,7 @@ namespace cl::sycl::usm {
 #endif
 
 
-#include "missing_implementations.hpp"
-
+#include "intrinsics.hpp"
 
 namespace usm_smart_ptr {
     using namespace sycl::usm;
@@ -26,21 +25,7 @@ namespace usm_smart_ptr {
     public:
         explicit usm_ptr(T *t) : val_(t) {}
 
-        /**
-         * Explicit conversion needed if the memory is not shared
-         * @return
-         */
-#ifdef IMPLICIT_MEMORY_COPY
-
         operator T *() const noexcept { return val_; }
-
-#else
-
-        explicit operator T *() const noexcept { return val_; }
-
-#endif
-        //explicit(Tag != sycl::usm::alloc::shared) operator T *() const noexcept { return val_; }
-
     };
 
 

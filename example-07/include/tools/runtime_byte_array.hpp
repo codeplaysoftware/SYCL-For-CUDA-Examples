@@ -31,7 +31,6 @@
 #include <tools/intrinsics.hpp>
 
 namespace sbb {
-
     namespace runtime_idx_detail {
 
         template<typename T, typename array_t, int N, int idx_max = N - 1>
@@ -71,7 +70,6 @@ namespace sbb {
         }
     }
 
-
 }
 
 
@@ -85,14 +83,13 @@ public:
      * Connstructor that takes a list of bytes
      * @param init
      */
-    [[nodiscard]] constexpr runtime_byte_array(const std::initializer_list<uint8_t> &init) {
-        int idx = 0;
+    constexpr runtime_byte_array(const std::initializer_list<uint8_t> &init) {
+        uint idx = 0;
         for (auto b: init) {
             write(idx, b);
             ++idx;
         }
     }
-
 
     /**
      * Reads the ith byte

@@ -156,7 +156,7 @@ endif ()
 list(APPEND COMPUTECPP_DEVICE_COMPILER_FLAGS -DSYCL_LANGUAGE_VERSION=${SYCL_LANGUAGE_VERSION})
 
 foreach (bitcode IN ITEMS ${COMPUTECPP_BITCODE})
-    list(APPEND COMPUTECPP_DEVICE_COMPILER_FLAGS -sycl-target ${bitcode})
+    list(APPEND COMPUTECPP_DEVICE_COMPILER_FLAGS -no-serial-memop -sycl-target ${bitcode})
 endforeach ()
 
 message(STATUS "compute++ flags - ${COMPUTECPP_DEVICE_COMPILER_FLAGS}")

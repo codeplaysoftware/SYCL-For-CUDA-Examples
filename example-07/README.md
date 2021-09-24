@@ -26,6 +26,7 @@ Some functions were ported from a CUDA implementation. The SYCL code was tested 
 | md2      | 4.18        | 4.23/ 2.40                                  | 0.22 / 0.25                             | 0.176                             | 0.25 / 2.33                |
 
 ### Note
+
 Something broke the spir64 backend of DPC++ and it produces now very slow code
 
 Benchmark configuration:
@@ -39,7 +40,8 @@ Benchmark configuration:
 
 ### Remark
 
-These are not the "best" settings as the optimum changes with the algorithm. The benchmarks measure the time to run 40 iterations, without copying the memory between the device and the host. In a real application, you could be memory bound.
+These are not the "best" settings as the optimum changes with the algorithm. The benchmarks measure the time to run 40 iterations, without copying the memory between the device and the host. In a real application, you
+could be memory bound.
 
 ## How to build
 
@@ -104,7 +106,8 @@ You may find [here](https://github.com/Michoumichmich/cuda-hashing-algos-with-be
 
 - [Intel's clang](https://github.com/intel/llvm) with OpenCL on CPU (using Intel's driver) and [Codeplay's CUDA backend](https://www.codeplay.com/solutions/oneapi/for-cuda/)
 - [hipSYCL](https://github.com/illuhad/hipSYCL) on macOS with the OpenMP backend (set `hipSYCL_DIR` then `cmake .. -DHIPSYCL_TARGETS="..."`)
-- [ComputeCPP](https://developer.codeplay.com/products/computecpp/ce/home) you can build with `cmake .. -DComputeCpp_DIR=/path_to_computecpp -DCOMPUTECPP_BITCODE=spir64 -DCMAKE_BUILD_TYPE=Release`, Tested on the host device, `spir64` and `spirv64`. See [ComputeCpp SDK](https://github.com/codeplaysoftware/computecpp-sdk)
+- [ComputeCPP](https://developer.codeplay.com/products/computecpp/ce/home) you can build with `cmake .. -DComputeCpp_DIR=/path_to_computecpp -DCOMPUTECPP_BITCODE=spir64 -DCMAKE_BUILD_TYPE=Release`, Tested on the host
+  device, `spir64` and `spirv64`. See [ComputeCpp SDK](https://github.com/codeplaysoftware/computecpp-sdk)
 
 # Acknowledgements
 

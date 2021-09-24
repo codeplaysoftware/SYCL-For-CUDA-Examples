@@ -3,7 +3,7 @@
 #include "handle.hpp"
 #include "common.hpp"
 
-#include "../tools/missing_implementations.hpp"
+#include "../tools/intrinsics.hpp"
 #include "../tools/sycl_queue_helpers.hpp"
 
 #include <type_traits>

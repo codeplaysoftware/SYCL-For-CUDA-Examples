@@ -9,7 +9,7 @@
 template<bool strict = true>
 static inline sycl::queue try_get_queue_with_device(const sycl::device &in_dev) {
     auto exception_handler = [](const sycl::exception_list &exceptions) {
-        for (std::exception_ptr const &e : exceptions) {
+        for (std::exception_ptr const &e: exceptions) {
             try {
                 std::rethrow_exception(e);
             }
@@ -55,7 +55,6 @@ void duplicate(byte *in, byte *out, dword item_len, dword count) {
 }
 
 
-
 std::vector<sycl::queue> get_all_queues_once() {
     std::vector<sycl::device> devices1 = sycl::device::get_devices();
     std::vector<sycl::queue> queues1;
@@ -64,16 +63,15 @@ std::vector<sycl::queue> get_all_queues_once() {
 }
 
 
-std::vector<sycl::queue> get_all_queues(){
-   static std::vector<sycl::queue> queues = get_all_queues_once();
-   return queues;
+std::vector<sycl::queue> get_all_queues() {
+    static std::vector<sycl::queue> queues = get_all_queues_once();
+    return queues;
 }
-
 
 
 template<typename Func>
 void for_all_workers(Func f) {
-    static auto  queues = get_all_queues();
+    static auto queues = get_all_queues();
     {
         for (const auto &q: queues) {
             std::cout << "Running on: " << q.get_device().get_info<sycl::info::device::name>() << std::endl;
