@@ -9,7 +9,7 @@ if (VERBOSE_LIB)
 endif ()
 
 # If you're using the DPCPP compiler, these flags will be used. Set here the devies you want to target
-set(DPCPP_FLAGS -fsycl -fsycl-targets=spir64_x86_64,nvptx64-nvidia-cuda -Xcuda-ptxas -v -Xsycl-target-backend=nvptx64-nvidia-cuda --cuda-gpu-arch=sm_50 -Wno-linker-warnings)
+set(DPCPP_FLAGS -fsycl -fsycl-targets=spir64_x86_64,nvptx64-nvidia-cuda -Xcuda-ptxas -v -Xsycl-target-backend=nvptx64-nvidia-cuda --cuda-gpu-arch=sm_75 -Wno-linker-warnings)
 include(cmake/FindSYCL.cmake)
 
 # Default C++ Flags for warnings and optimisation

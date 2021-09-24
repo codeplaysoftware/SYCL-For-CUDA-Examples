@@ -16,14 +16,14 @@ The following hashing methods are currently available:
 
 Some functions were ported from a CUDA implementation. The SYCL code was tested unchanged across the different implementations and hardware. Here's how they perform (the values are in GB/s):
 
-| Function | Native CUDA | SYCL on CUDA (optimised/original)           | SYCL on ComputeCPP CPU (spir64/spirv64) | SYCL on DPC++ CPU (spir64_x86_64) | SYCL on hipSYCL (omp/cuda) |
+| Function | Native CUDA | SYCL on DPC++ CUDA (optimised)              | SYCL on ComputeCPP CPU (spir64/spirv64) | SYCL on DPC++ CPU (spir64_x86_64) | SYCL on hipSYCL (omp/cuda) |
 | -------- | ----------- | ------------------------------------------- | --------------------------------------- | --------------------------------- | -------------------------- |
-| keccak   | 15.7        | 23.0                                        | 4.14 / 4.08                             | 4.98                              | 4.32 / 23.0                |
-| md5      | 14.6        | 20.3                                        | 6.26 / 8.70                             | 9.93                              | 9.27 / 20.2                |
-| blake2b  | 14.7        | 21.6 / 18.6                                 | 9.46 / 9.46                             | 12.4                              | 7.71 / 17.8                |
-| sha1     | 13.1        | 19.34 / 14.9                                | 3.61 / 2.59                             | 3.30                              | 4.39 / 19.2                |
-| sha256   | 13.4        | 19.15 / 13.6                                | 2.23 / 1.74                             | 2.91                              | 2.93 / 19.0                |
-| md2      | 4.18        | 4.23/ 2.40                                  | 0.22 / 0.25                             | 0.176                             | 0.25 / 2.33                |
+| keccak   | 15.7        | 23.0                                        | 4.14 / 3.89                             | 4.98                              | 4.32 / 23.2                |
+| md5      | 14.6        | 20.3                                        | 6.26 / 5.89                             | 9.93                              | 9.27 / 20.2                |
+| blake2b  | 14.7        | 21.6                                        | 9.46 / 10.0                             | 12.4                              | 7.71 / 17.9                |
+| sha1     | 14.7        | 19.34                                       | 3.61 / 3.35                             | 3.30                              | 4.39 / 19.2                |
+| sha256   | 13.5        | 19.15                                       | 2.23 / 2.00                             | 2.91                              | 2.93 / 19.1                |
+| md2      | 4.18        | 4.23                                        | 0.22 / 0.25                             | 0.176                             | 0.25 / 2.33                |
 
 ### Note
 
