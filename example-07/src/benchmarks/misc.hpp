@@ -3,7 +3,6 @@
 #include <cstring>
 #include <sycl_hash.hpp>
 #include <tools/fill_rand.hpp>
-#include <tools/chrono.hpp>
 
 #include <iomanip>
 

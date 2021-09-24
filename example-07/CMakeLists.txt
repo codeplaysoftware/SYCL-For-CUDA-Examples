@@ -50,10 +50,11 @@ set(sycl_hash_all_sources
         include/hash_functions/md5.hpp
         include/hash_functions/keccak.hpp
         include/hash_functions/md2.hpp
-        include/tools/chrono.hpp
         include/tools/fill_rand.hpp
         include/tools/sycl_queue_helpers.hpp
         include/tools/usm_smart_ptr.hpp
+        include/tools/runtime_byte_array.hpp
+        include/tools/intrinsics.hpp
         )
 
 add_library(sycl_hash SHARED ${sycl_hash_all_sources} ${sycl_hash_all_kernels})
