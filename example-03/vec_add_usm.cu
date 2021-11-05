@@ -6,19 +6,15 @@
 
 class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const sycl::device &Device) const override {
-    using namespace sycl::info;
-
-    const std::string DriverVersion = Device.get_info<device::driver_version>();
-
-    if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
-      std::cout << " CUDA device found \n";
+  int operator()(const sycl::device &device) const override {
+    if(device.get_platform().get_backend() == sycl::backend::cuda){
+      std::cout << " CUDA device found " << std::endl;
       return 1;
-    };
-    return -1;
+    } else{
+      return -1;
+    }
   }
 };
-
 
 // CUDA kernel. Each thread takes care of one element of c
 __global__ void vecAdd(double *a, double *b, double *c, int n) {

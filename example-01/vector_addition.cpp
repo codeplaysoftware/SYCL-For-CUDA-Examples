@@ -26,16 +26,13 @@
 
 class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const sycl::device &Device) const override {
-    using namespace sycl::info;
-
-    const std::string DriverVersion = Device.get_info<device::driver_version>();
-
-    if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
+  int operator()(const sycl::device &device) const override {
+    if(device.get_platform().get_backend() == sycl::backend::cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
-    };
-    return -1;
+    } else{
+      return -1;
+    }
   }
 };
 
