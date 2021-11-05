@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
     auto local_a_acc =
         local_a_gpu.get_buffer().template get_access<sycl::access::mode::write>(
             h);
-    h.codeplay_host_task([=](sycl::interop_handle ih) {
+    h.interop_task([=](sycl::interop_handle ih) {
       auto global_a_ptr = reinterpret_cast<float *>(
           ih.get_native_mem<sycl::backend::cuda>(global_a_acc));
       auto local_a_ptr = reinterpret_cast<float *>(
@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
     auto local_b_acc =
         local_b_gpu.get_buffer().template get_access<sycl::access::mode::write>(
             h);
-    h.codeplay_host_task([=](sycl::interop_handle ih) {
+    h.interop_task([=](sycl::interop_handle ih) {
       auto global_b_ptr = reinterpret_cast<float *>(
           ih.get_native_mem<sycl::backend::cuda>(global_b_acc));
       auto local_b_ptr = reinterpret_cast<float *>(
@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
     auto local_c_acc =
         local_c_gpu.get_buffer().template get_access<sycl::access::mode::read>(
             h);
-    h.codeplay_host_task([=](sycl::interop_handle ih) {
+    h.interop_task([=](sycl::interop_handle ih) {
       auto local_c_ptr = reinterpret_cast<float *>(
           ih.get_native_mem<sycl::backend::cuda>(local_c_acc));
       auto global_c_ptr = reinterpret_cast<float *>(
