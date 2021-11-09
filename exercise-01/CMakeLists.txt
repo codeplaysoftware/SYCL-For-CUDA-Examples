@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
+# Don't complain about empty CMAKE_CUDA_ARCHITECTURES
+cmake_policy(SET CMP0104 OLD)
+
 project(sycl_cuda_interop LANGUAGES CXX CUDA)
 
 find_package(CUDAToolkit)

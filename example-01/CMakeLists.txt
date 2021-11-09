@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+# Don't complain about empty CMAKE_CUDA_ARCHITECTURES
+cmake_policy(SET CMP0104 OLD)
+
 project(cmake_and_cuda LANGUAGES CXX CUDA)
 
 include(CTest)
