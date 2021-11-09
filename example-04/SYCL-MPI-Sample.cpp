@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
   auto ht = [&](sycl::handler &h) {
     sycl::accessor input_acc{input_buffer, h, sycl::read_write};
     sycl::accessor local_acc{local_buffer, h, sycl::read_write};
-    h.interop_task([=](sycl::interop_handle ih) {
+    h.host_task([=](sycl::interop_handle ih) {
       auto cuda_ptr = reinterpret_cast<double *>(
           ih.get_native_mem<sycl::backend::cuda>(input_acc));
       auto cuda_local_ptr = reinterpret_cast<double *>(
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
   auto ht2 = [&](sycl::handler &h) {
     sycl::accessor out_acc{out_buffer, h, sycl::read_write};
     sycl::accessor global_sum_acc{global_sum, h, sycl::read_write};
-    h.interop_task([=](sycl::interop_handle ih) {
+    h.host_task([=](sycl::interop_handle ih) {
       auto cuda_out_ptr = reinterpret_cast<double *>(
           ih.get_native_mem<sycl::backend::cuda>(out_acc));
       auto cuda_global_sum_ptr = reinterpret_cast<double *>(
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
   auto ht3 = [&](sycl::handler &h) {
     sycl::accessor input_acc{input_buffer, h, sycl::read_write};
     sycl::accessor local_acc{local_buffer, h, sycl::read_write};
-    h.interop_task([=](sycl::interop_handle ih) {
+    h.host_task([=](sycl::interop_handle ih) {
       auto cuda_local_ptr = reinterpret_cast<double *>(
           ih.get_native_mem<sycl::backend::cuda>(local_acc));
       auto cuda_input_ptr = reinterpret_cast<double *>(
