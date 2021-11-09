@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   }
 
   myQueue.submit([&](handler& h) {
-      h.interop_task([=](interop_handler ih) {
+      h.host_task([=](interop_handle ih) {
         // Number of threads in each thread block
         int blockSize = 1024;
 
@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
 
         // Execute the kernel
         vecAdd<<<gridSize, blockSize>>>(d_A, d_B, d_C, n);
+        cudaDeviceSynchronize();
         });
   });
 

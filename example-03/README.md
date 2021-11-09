@@ -45,7 +45,7 @@ $ ./vec_add.exe
 Calling CUDA kernels from SYCL
 -------------------------------
 
-Using Codeplay's `interop_task` extension, the example calls a CUDA kernel from
+Using `host_task`, the example calls a CUDA kernel from
 a SYCL application. Note the example is compiled with the LLVM CUDA compiler, 
 not with the SYCL compiler, since there are no SYCL kernels on it. It is only
 required to link against the SYCL runtime library to ensure the runtime can use
@@ -57,4 +57,9 @@ kernels and call them together from a main application at runtime.
 
 The example uses an extension to the SYCL interface to interact with the CUDA
 Runtime API. At the time of writing the extension is not public, so only a
-boolean flagis passed to the `sycl::context` creation.
+boolean flag is passed to the `sycl::context` creation.
+
+Notes
+-----
+
+Compilation of these examples produces a lot of warnings about ignored `sycl_special_class` attributes, and deprecation of `interop_handler`. These can be safely ignored.

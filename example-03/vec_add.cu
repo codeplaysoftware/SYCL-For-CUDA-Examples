@@ -62,10 +62,10 @@ int main(int argc, char *argv[]) {
       auto accB = bB.get_access<access::mode::read>(h);
       auto accC = bC.get_access<access::mode::write>(h);
 
-      h.interop_task([=](interop_handler ih) {
-        auto dA = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accA));
-        auto dB = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accB));
-        auto dC = reinterpret_cast<double*>(ih.get_mem<backend::cuda>(accC));
+      h.host_task([=](interop_handle ih) {
+        auto dA = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accA));
+        auto dB = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accB));
+        auto dC = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accC));
 
         int blockSize, gridSize;
         // Number of threads in each thread block

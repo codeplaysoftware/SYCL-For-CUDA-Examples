@@ -2,11 +2,11 @@
 
 CUDACXX=${SYCL_ROOT_DIR}/bin/clang++
 
-SYCL_INCLUDE=${SYCL_ROOT_DIR}/include/sycl/
+CUDA_ROOT_DIR=/usr/local/cuda/
 
-CUDAFLAGS=--cuda-gpu-arch=sm_30 
+CUDAFLAGS=--cuda-gpu-arch=sm_70
 
-CXXFLAGS=-std=c++17 ${CUDAFLAGS} -I${SYCL_INCLUDE} -g
+CXXFLAGS=-std=c++17 ${CUDAFLAGS} -I${SYCL_ROOT_DIR}/include/ -I${SYCL_ROOT_DIR}/include/sycl/  -g
 
 LIBS=-L${SYCL_ROOT_DIR}/lib -lOpenCL -lsycl -L${CUDA_ROOT_DIR}/lib64 -lcudart
 
