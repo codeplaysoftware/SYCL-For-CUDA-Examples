@@ -17,11 +17,14 @@ Building the example
 =====================
 
 ``` sh
-$ mkdir build && cd build
-$ cmake ../ -DSYCL_ROOT=${SYCL_ROOT_DIR} -DCMAKE_CXX_COMPILER=${SYCL_ROOT_DIR}/bin/clang++
-$ make -j 8
+$ bash build.sh
 ```
 
+or (SYCL version only):
+
+```
+${SYCL_ROOT_DIR}/bin/clang++ -DCUDA_NO_HALF -isystem /usr/local/cuda/include -fsycl -fsycl-targets=nvptx64-nvidia-cuda -fsycl-unnamed-lambda -std=gnu++17 -L/usr/local/cuda/lib64  -lcublas -lcudart -lcuda -o sycl_sgemm sycl_sgemm.cpp
+```
 Example
 =========
 
