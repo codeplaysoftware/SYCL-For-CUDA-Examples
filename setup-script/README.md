@@ -34,7 +34,7 @@ public:
 };
 ```
 
-2. Build with `-fsycl -fsycl-targets=nvptx64-nvidia-cuda-sycldevice`
+2. Build with `-fsycl -fsycl-targets=nvptx64-nvidia-cuda`
 3. For oneMKL, link with: `-lonemkl_blas_cublas -lonemkl`
 
 ### Intel's openCL
