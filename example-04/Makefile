@@ -1,4 +1,4 @@
-MPICOMP=mpicxx -I$(HOME)/sycl_workspace/build_dpcpp/install/include/sycl/ -O1 -fsycl-unnamed-lambda -std=c++17  -fsycl -fsycl-targets=nvptx64-nvidia-cuda-sycldevice
+MPICOMP=mpicxx -I$(HOME)/sycl_workspace/build_dpcpp/install/include/sycl/ -O1 -fsycl-unnamed-lambda -std=c++17  -fsycl -fsycl-targets=nvptx64-nvidia-cuda
 
 sycl-mpi-smaple: SYCL-MPI-Sample.o
 	$(MPICOMP) SYCL-MPI-Sample.o -o sycl-mpi-sample
