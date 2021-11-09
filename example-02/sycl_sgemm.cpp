@@ -80,7 +80,7 @@ int main() {
       auto d_B = b_B.get_access<sycl::access::mode::read>(h);
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
-      h.interop_task([=](sycl::interop_handle ih) {
+      h.host_task([=](sycl::interop_handle ih) {
         cuCtxSetCurrent(ih.get_native_context<backend::cuda>());
         cublasSetStream(handle, ih.get_native_queue<backend::cuda>());
         auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_A));
