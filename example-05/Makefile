@@ -1,5 +1,5 @@
 SYCLCXX=clang++
-SYCLFLAGS=-O2 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -fsycl-unnamed-lambda
+SYCLFLAGS=-O2 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -fsycl-unnamed-lambda -Wno-linker-warnings
 OBJS=main.o vadd_sycl.o vadd_cuda.o
 CUFLAGS=--cuda-gpu-arch=sm_80 -std=c++11 
 

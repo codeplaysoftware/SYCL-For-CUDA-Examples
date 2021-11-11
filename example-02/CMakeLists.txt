@@ -16,7 +16,8 @@ set(SYCL_INCLUDE_DIR "${SYCL_ROOT}/lib/clang/14.0.0/include/")
 set(SYCL_LIB "${SYCL_ROOT}/lib/libsycl.so")
 set(SYCL_FLAGS "-fsycl" 
       "-fsycl-targets=nvptx64-nvidia-cuda"
-      "-fsycl-unnamed-lambda")
+      "-fsycl-unnamed-lambda"
+      "-Wno-linker-warnings")
 
 
 # Build the CUDA code

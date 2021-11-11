@@ -6,7 +6,7 @@ CUDA_ROOT_DIR=/usr/local/cuda/
 
 CUDAFLAGS=--cuda-gpu-arch=sm_70
 
-CXXFLAGS=-std=c++17 ${CUDAFLAGS} -I${SYCL_ROOT_DIR}/include/ -I${SYCL_ROOT_DIR}/include/sycl/  -g
+CXXFLAGS=-std=c++17 ${CUDAFLAGS} -I${SYCL_ROOT_DIR}/include/ -I${SYCL_ROOT_DIR}/include/sycl/ -Wno-linker-warnings  -g
 
 LIBS=-L${SYCL_ROOT_DIR}/lib -lOpenCL -lsycl -L${CUDA_ROOT_DIR}/lib64 -lcudart
 

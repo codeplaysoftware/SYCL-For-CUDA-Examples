@@ -1,4 +1,4 @@
-MPICOMP=mpicxx -I${SYCL_ROOT_DIR}/include/sycl/ -O1 -fsycl-unnamed-lambda -std=c++17  -fsycl -fsycl-targets=nvptx64-nvidia-cuda
+MPICOMP=mpicxx -I${SYCL_ROOT_DIR}/include/sycl/ -O1 -fsycl-unnamed-lambda -std=c++17  -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Wno-linker-warnings
 
 sycl-mpi-sample: SYCL-MPI-Sample.o
 	$(MPICOMP) SYCL-MPI-Sample.o -o sycl-mpi-sample
