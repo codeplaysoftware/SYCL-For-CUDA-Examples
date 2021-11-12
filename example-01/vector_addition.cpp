@@ -26,20 +26,16 @@
 
 class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const sycl::device &Device) const override {
-    using namespace sycl::info;
-
-    const std::string DriverVersion = Device.get_info<device::driver_version>();
-
-    if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
+  int operator()(const sycl::device &device) const override {
+    if(device.get_platform().get_backend() == sycl::backend::cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
-    };
-    return -1;
+    } else{
+      return -1;
+    }
   }
 };
 
-class vec_add;
 int main(int argc, char *argv[]) {
   constexpr const size_t N = 100000;
   const sycl::range VecSize{N};
@@ -71,8 +67,8 @@ int main(int argc, char *argv[]) {
     auto b = bufB.get_access<read_t>(h);
     auto c = bufC.get_access<write_t>(h);
 
-    h.parallel_for<vec_add>(VecSize,
-                            [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
+    h.parallel_for(VecSize,
+                   [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
   };
 
   myQueue.submit(cg);

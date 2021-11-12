@@ -1,7 +1,7 @@
 CXX=clang++
 FORT=nvfortran
 FFLAGS=-c++libs -cuda  
-CXXFLAGS=-fsycl -fsycl-targets=nvptx64-nvidia-cuda-sycldevice -fsycl-unnamed-lambda 
+CXXFLAGS=-fsycl -fsycl-targets=nvptx64-nvidia-cuda -fsycl-unnamed-lambda -Wno-linker-warnings
 DPCPP_PATH=/home/ruyman/sycl_workspace/build_dpcpp/install
 
 default: final.exe

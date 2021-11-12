@@ -6,19 +6,15 @@
 
 class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const sycl::device &Device) const override {
-    using namespace sycl::info;
-
-    const std::string DriverVersion = Device.get_info<device::driver_version>();
-
-    if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
-      std::cout << " CUDA device found \n";
+  int operator()(const sycl::device &device) const override {
+    if(device.get_platform().get_backend() == sycl::backend::cuda){
+      std::cout << " CUDA device found " << std::endl;
       return 1;
-    };
-    return -1;
+    } else{
+      return -1;
+    }
   }
 };
-
 
 // CUDA kernel. Each thread takes care of one element of c
 __global__ void vecAdd(double *a, double *b, double *c, int n) {
@@ -55,7 +51,7 @@ int main(int argc, char *argv[]) {
   }
 
   myQueue.submit([&](handler& h) {
-      h.interop_task([=](interop_handler ih) {
+      h.host_task([=](interop_handle ih) {
         // Number of threads in each thread block
         int blockSize = 1024;
 
@@ -64,6 +60,9 @@ int main(int argc, char *argv[]) {
 
         // Execute the kernel
         vecAdd<<<gridSize, blockSize>>>(d_A, d_B, d_C, n);
+        // Interop with host_task doesn't add CUDA event to task graph
+        // so we must manually sync here.
+        cudaDeviceSynchronize();
         });
   });
 

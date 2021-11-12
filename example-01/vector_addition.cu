@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 // CUDA kernel. Each thread takes care of one element of c
 __global__ void vecAdd(double *a, double *b, double *c, int n) {
@@ -44,9 +45,8 @@ int main(int argc, char *argv[]) {
   cudaMalloc(&d_b, bytes);
   cudaMalloc(&d_c, bytes);
 
-  int i;
   // Initialize vectors on host
-  for (i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     h_a[i] = sin(i) * sin(i);
     h_b[i] = cos(i) * cos(i);
   }
@@ -72,9 +72,9 @@ int main(int argc, char *argv[]) {
   // Sum up vector c and print result divided by n, this should equal 1 within
   // error
   double sum = 0;
-  for (i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
     sum += h_c[i];
-  printf("final result: %f\n", sum / n);
+  std::cout << "Sum is : " << sum << std::endl;
 
   // Release device memory
   cudaFree(d_a);

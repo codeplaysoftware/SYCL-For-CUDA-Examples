@@ -33,16 +33,13 @@ void inline checkCudaErrorMsg(CUresult status, const char *msg) {
 
 class CUDASelector : public sycl::device_selector {
 public:
-  int operator()(const sycl::device &Device) const override {
-    using namespace sycl::info;
-
-    const std::string DriverVersion = Device.get_info<device::driver_version>();
-
-    if (Device.is_gpu() && (DriverVersion.find("CUDA") != std::string::npos)) {
+  int operator()(const sycl::device &device) const override {
+    if(device.get_platform().get_backend() == sycl::backend::cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
-    };
-    return -1;
+    } else{
+      return -1;
+    }
   }
 };
 
@@ -83,7 +80,7 @@ int main() {
       auto d_B = b_B.get_access<sycl::access::mode::read>(h);
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
-      h.codeplay_host_task([=](sycl::interop_handle ih) {
+      h.host_task([=](sycl::interop_handle ih) {
         cuCtxSetCurrent(ih.get_native_context<backend::cuda>());
         cublasSetStream(handle, ih.get_native_queue<backend::cuda>());
         auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_A));
