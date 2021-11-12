@@ -36,7 +36,6 @@ public:
   }
 };
 
-class vec_add;
 int main(int argc, char *argv[]) {
   constexpr const size_t n = 100000;
 
@@ -79,8 +78,10 @@ int main(int argc, char *argv[]) {
 
   // Command Group creation
   auto cg = [&](sycl::handler &h) {
-    h.parallel_for<vec_add>(sycl::range(n),
-                            [=](sycl::id<1> i) { d_c[i] = d_a[i] + d_b[i]; });
+    h.parallel_for(sycl::range(n),
+                   [=](sycl::id<1> i) {
+                     d_c[i] = d_a[i] + d_b[i];
+                   });
   };
 
   // Run the kernel defined above
