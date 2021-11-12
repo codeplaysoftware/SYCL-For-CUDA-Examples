@@ -60,6 +60,8 @@ int main(int argc, char *argv[]) {
 
         // Execute the kernel
         vecAdd<<<gridSize, blockSize>>>(d_A, d_B, d_C, n);
+        // Interop with host_task doesn't add CUDA event to task graph
+        // so we must manually sync here.
         cudaDeviceSynchronize();
         });
   });
