@@ -35,3 +35,12 @@ target_compile_definitions(sycl_sgemm PUBLIC CUDA_NO_HALF)
 target_link_libraries(sycl_sgemm PUBLIC ${SYCL_FLAGS})
 target_include_directories(sycl_sgemm PUBLIC ${SYCL_INCLUDE_DIR} ${CUDA_INCLUDE_DIRS})
 target_link_libraries(sycl_sgemm PUBLIC CUDA::toolkit CUDA::cuda_driver CUDA::cublas)
+
+# Build the SYCL USM code
+add_executable (sycl_sgemm_usm sycl_sgemm_usm.cpp)
+target_compile_features(sycl_sgemm_usm PUBLIC cxx_std_17)
+target_compile_options(sycl_sgemm_usm PUBLIC ${SYCL_FLAGS})
+target_compile_definitions(sycl_sgemm_usm PUBLIC CUDA_NO_HALF)
+target_link_libraries(sycl_sgemm_usm PUBLIC ${SYCL_FLAGS})
+target_include_directories(sycl_sgemm_usm PUBLIC ${SYCL_INCLUDE_DIR} ${CUDA_INCLUDE_DIRS})
+target_link_libraries(sycl_sgemm_usm PUBLIC CUDA::toolkit CUDA::cuda_driver CUDA::cublas)
