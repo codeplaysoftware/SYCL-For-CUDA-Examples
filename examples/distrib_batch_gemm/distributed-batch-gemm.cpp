@@ -99,9 +99,9 @@ int main(int argc, char **argv) {
             h);
     h.interop_task([=](sycl::interop_handle ih) {
       auto global_a_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(global_a_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(global_a_acc));
       auto local_a_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(local_a_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(local_a_acc));
       MPI_Scatter(global_a_ptr, lda * k, MPI_FLOAT, local_a_ptr, lda * k,
                   MPI_FLOAT, 0, MPI_COMM_WORLD);
     });
@@ -117,9 +117,9 @@ int main(int argc, char **argv) {
             h);
     h.interop_task([=](sycl::interop_handle ih) {
       auto global_b_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(global_b_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(global_b_acc));
       auto local_b_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(local_b_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(local_b_acc));
       MPI_Scatter(global_b_ptr, ldb * n, MPI_FLOAT, local_b_ptr, ldb * n,
                   MPI_FLOAT, 0, MPI_COMM_WORLD);
     });
@@ -144,9 +144,9 @@ int main(int argc, char **argv) {
             h);
     h.interop_task([=](sycl::interop_handle ih) {
       auto local_c_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(local_c_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(local_c_acc));
       auto global_c_ptr = reinterpret_cast<float *>(
-          ih.get_native_mem<sycl::backend::cuda>(global_c_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(global_c_acc));
       MPI_Gather(local_c_ptr, ldc * n, MPI_FLOAT, global_c_ptr, ldc * n,
                  MPI_FLOAT, 0, MPI_COMM_WORLD);
     });

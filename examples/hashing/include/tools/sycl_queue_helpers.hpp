@@ -18,7 +18,7 @@ class cuda_selector : public sycl::device_selector {
 public:
     int operator()(const sycl::device &device) const override {
 #if defined(SYCL_IMPLEMENTATION_ONEAPI) || defined(SYCL_IMPLEMENTATION_INTEL)
-        return device.get_platform().get_backend() == sycl::backend::cuda && device.get_info<sycl::info::device::is_available>() ? 1 : -1;
+        return device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda && device.get_info<sycl::info::device::is_available>() ? 1 : -1;
 #else
         return device.is_gpu() && (device.get_info<sycl::info::device::name>().find("NVIDIA") != std::string::npos) ? 1 : -1;
 #endif

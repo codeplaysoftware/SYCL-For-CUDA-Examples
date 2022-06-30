@@ -34,7 +34,7 @@ void inline checkCudaErrorMsg(CUresult status, const char *msg) {
 class CUDASelector : public sycl::device_selector {
 public:
   int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::cuda){
+    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
     } else{
@@ -81,15 +81,17 @@ int main() {
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
       h.host_task([=](sycl::interop_handle ih) {
-        cuCtxSetCurrent(ih.get_native_context<backend::cuda>());
-        cublasSetStream(handle, ih.get_native_queue<backend::cuda>());
-        auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_A));
-        auto cuB = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_B));
-        auto cuC = reinterpret_cast<float *>(ih.get_native_mem<backend::cuda>(d_C));
+        cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
+        auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
+        cublasSetStream(handle, cuStream);
+        auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
+        auto cuB = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_B));
+        auto cuC = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_C));
 
         CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                                 WIDTH, &ALPHA, cuA, WIDTH, cuB, WIDTH, &BETA,
                                 cuC, WIDTH));
+        cuStreamSynchronize(cuStream);
       });
     });
   }
