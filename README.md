@@ -37,3 +37,45 @@ $ git pull
 ```
 
 Refer to each example and/or exercise for detailed instructions on how  to run it.
+
+Examples
+=========
+
+[Vector Addition](examples/vector_addition)
+--------------------------------------------
+
+This trivial example can be used to compare a simple vector addition in CUDA to
+an equivalent implementation in SYCL for CUDA. The aim of the example is also 
+to highlight how to build an application with SYCL for CUDA using DPC++ support, 
+for which an example CMakefile is provided.
+
+[CUDA Interop](examples/cuda_interop)
+--------------------------------------------
+
+In this example, we re-use the trivial SYCL kernel we used in Vector Addition, but instead of writing the SYCL variant, we will keep the original CUDA kernel, only replacing the CUDA Runtime calls with the SYCL API.
+
+[Fortran Interface](examples/fortran_interface)
+--------------------------------------------
+
+This demonstrates an example of how to call a SYCL function from a CUDA fortran code.
+
+[MPI](examples/MPI)
+--------------------------------------------
+
+This example shows how to integrate MPI calls within the SYCL DAG using Host Tasks for integration.
+
+
+[SGEMM Interop](examples/sgemm_interop)
+--------------------------
+
+This demonstrates using SYCL's `host_task` for CUDA interoperability, calling CUBLAS's SGEMM routine for matrix multiplication.
+
+[Distributed (MPI) GEMM](examples/distrib_batch_gemm)
+--------------------------------------------
+
+This example combines the MPI and SGEMM Interop examples to distribute a matrix multiplication problem between MPI ranks.
+
+[Hashing Algorithms](examples/hashing)
+--------------------------------------------
+
+This example is slightly different - it benchmarks a series of hashing algorithms.

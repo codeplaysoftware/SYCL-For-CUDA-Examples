@@ -1,4 +1,4 @@
-Example 01: Vector addition 
+Vector addition
 ===============================
 
 This trivial example can be used to compare a simple vector addition in CUDA to
