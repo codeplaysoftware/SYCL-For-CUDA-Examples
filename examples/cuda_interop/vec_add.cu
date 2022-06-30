@@ -11,7 +11,7 @@
 class CUDASelector : public sycl::device_selector {
 public:
   int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::cuda){
+    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
     } else{
@@ -63,9 +63,9 @@ int main(int argc, char *argv[]) {
       auto accC = bC.get_access<access::mode::write>(h);
 
       h.host_task([=](interop_handle ih) {
-        auto dA = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accA));
-        auto dB = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accB));
-        auto dC = reinterpret_cast<double*>(ih.get_native_mem<backend::cuda>(accC));
+        auto dA = reinterpret_cast<double*>(ih.get_native_mem<backend::ext_oneapi_cuda>(accA));
+        auto dB = reinterpret_cast<double*>(ih.get_native_mem<backend::ext_oneapi_cuda>(accB));
+        auto dC = reinterpret_cast<double*>(ih.get_native_mem<backend::ext_oneapi_cuda>(accC));
 
         int blockSize, gridSize;
         // Number of threads in each thread block

@@ -11,7 +11,7 @@ using namespace usm_smart_ptr;
 class cuda_selector : public sycl::device_selector {
 public:
     int operator()(const sycl::device &device) const override {
-        return device.get_platform().get_backend() == sycl::backend::cuda;
+        return device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda;
         //return device.is_gpu() && (device.get_info<sycl::info::device::driver_version>().find("CUDA") != std::string::npos);
     }
 };

@@ -78,9 +78,9 @@ int main(int argc, char *argv[]) {
     sycl::accessor local_acc{local_buffer, h, sycl::read_write};
     h.host_task([=](sycl::interop_handle ih) {
       auto cuda_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(input_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(input_acc));
       auto cuda_local_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(local_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(local_acc));
       MPI_Scatter(cuda_ptr, local_size, MPI_DOUBLE, cuda_local_ptr, local_size,
                   MPI_DOUBLE, 0, MPI_COMM_WORLD);
     });
@@ -122,9 +122,9 @@ int main(int argc, char *argv[]) {
     sycl::accessor global_sum_acc{global_sum, h, sycl::read_write};
     h.host_task([=](sycl::interop_handle ih) {
       auto cuda_out_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(out_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(out_acc));
       auto cuda_global_sum_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(global_sum_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(global_sum_acc));
       MPI_Allreduce(cuda_out_ptr, cuda_global_sum_ptr, 1, MPI_DOUBLE, MPI_SUM,
                     MPI_COMM_WORLD);
     });
@@ -153,9 +153,9 @@ int main(int argc, char *argv[]) {
     sycl::accessor local_acc{local_buffer, h, sycl::read_write};
     h.host_task([=](sycl::interop_handle ih) {
       auto cuda_local_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(local_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(local_acc));
       auto cuda_input_ptr = reinterpret_cast<double *>(
-          ih.get_native_mem<sycl::backend::cuda>(input_acc));
+          ih.get_native_mem<sycl::backend::ext_oneapi_cuda>(input_acc));
       MPI_Gather(cuda_local_ptr, local_size, MPI_DOUBLE, cuda_input_ptr,
                  local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     });

@@ -34,7 +34,7 @@ void inline checkCudaErrorMsg(CUresult status, const char *msg) {
 class CUDASelector : public sycl::device_selector {
 public:
   int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::cuda){
+    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
       std::cout << " CUDA device found " << std::endl;
       return 1;
     } else{
@@ -86,6 +86,7 @@ int main() {
     h.host_task([=](sycl::interop_handle ih) {
 
       // Set the correct cuda context & stream
+      cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
       auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
       cublasSetStream(handle, cuStream);
 

@@ -29,7 +29,7 @@ config file.
 class CUDADeviceSelector : public sycl::device_selector {
 public:
     int operator()(const sycl::device &device) const override {
-        return device.get_platform().get_backend() == sycl::backend::cuda ? 1 : -1;
+        return device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda ? 1 : -1;
     }
 };
 ```
