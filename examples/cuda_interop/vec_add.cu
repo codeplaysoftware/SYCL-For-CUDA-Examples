@@ -74,6 +74,9 @@ int main(int argc, char *argv[]) {
         gridSize = static_cast<int>(ceil(static_cast<float>(n) / blockSize));
         // Call the CUDA kernel directly from SYCL
         vecAdd<<<gridSize, blockSize>>>(dA, dB, dC, n);
+        // Interop with host_task doesn't add CUDA event to task graph
+        // so we must manually sync here.
+        cudaDeviceSynchronize();
       });
     });
 

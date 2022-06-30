@@ -86,13 +86,14 @@ int main() {
     h.host_task([=](sycl::interop_handle ih) {
 
       // Set the correct cuda context & stream
-      cuCtxSetCurrent(ih.get_native_context<backend::cuda>());
-      cublasSetStream(handle, ih.get_native_queue<backend::cuda>());
+      auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
+      cublasSetStream(handle, cuStream);
 
       // Call generalised matrix-matrix multiply
       CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                               WIDTH, &ALPHA, d_A, WIDTH, d_B, WIDTH, &BETA,
                               d_C, WIDTH));
+      cuStreamSynchronize(cuStream);
     });
   }).wait();
 
