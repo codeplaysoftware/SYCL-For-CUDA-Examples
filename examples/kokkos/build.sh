@@ -4,7 +4,7 @@ rm -rf build
 mkdir build
 cd build
 
-Kokkos_ROOT="$HOME/soft/kokkos/kokkos_install/lib/cmake/Kokkos" \
+# Set the environment variable Kokkos_ROOT="[your/kokkos/installation]/lib/cmake/Kokkos"
 CXXFLAGS="-Xsycl-target-frontend -O3" \
 LDFLAGS="-Xsycl-target-frontend -O3" \
 cmake .. -G Ninja \

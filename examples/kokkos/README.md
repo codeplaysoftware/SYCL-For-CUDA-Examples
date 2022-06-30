@@ -10,7 +10,10 @@ Building the test case
 
 test_case.cpp contains a simple kernel which has been copied straight from the Kokkos Tutorials (Exercises/02/Solution).
 
-Build it with build.sh
+Build it with build.sh, after setting the environment variable:
+```
+Kokkos_ROOT="[your/kokkos/installation]/lib/cmake/Kokkos"
+```
 
 Running the test case
 ----
@@ -30,10 +33,19 @@ Building kokkos
 In case you don't have an existing Kokkos build, there are some build scripts in `./kokkos_build_scripts`.
 There are scripts for building Kokkos with SYCL, or CUDA (nvcc or clang).
 
-Modify KOKKOS_ROOT for your environment.
-There's also a 'module load' for ompi, though obviously you could just set environment variables.
+Set the following environment variables:
+```
+KOKKOS_INSTALL_DIR=[/your/install/dir]
+KOKKOS_SOURCE_DIR=[/your/source/dir]
+HWLOC_DIR=[/your/hwloc/dir]
+```
+**Note**: if you do not have a HWLOC installation, this option can be removed & Kokkos will be built without HWLOC support.
 
-Otherwise this script largely imitates the Kokkos portion of our full installation script.
+You should modify the cmake command for your GPU arch. The current value:
+```
+      -DKokkos_ARCH_AMPERE80=ON \
+```
+represents CUDA's Ampere architecture (SM_80).
 
 
 
