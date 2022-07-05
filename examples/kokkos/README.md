@@ -27,7 +27,7 @@ Just launch it! There are optional flags:
 
 Obviously, not all of N, M & S should be set. The test case will sanity check your args anyway.
 
-Building kokkos
+Building Kokkos
 ------
 
 In case you don't have an existing Kokkos build, there are some build scripts in `./kokkos_build_scripts`.
@@ -39,13 +39,22 @@ KOKKOS_INSTALL_DIR=[/your/install/dir]
 KOKKOS_SOURCE_DIR=[/your/source/dir]
 HWLOC_DIR=[/your/hwloc/dir]
 ```
-**Note**: if you do not have a HWLOC installation, this option can be removed & Kokkos will be built without HWLOC support.
 
-You should modify the cmake command for your GPU arch. The current value:
+HWLOC
+------
+
+The [Portable Hardware Locality](https://www.open-mpi.org/projects/hwloc/) (hwloc) package is an optional dependency which enables Kokkos to query the hardware topology of the system on which it is running. If you do not have a HWLOC installation, this option can be removed & Kokkos will be built without HWLOC support.
+
+SYCL backend
+-------------
+
+Kokkos should work with any SYCL backend, though the focus of this examples repo is SYCL-For-CUDA.
+Previous work at Codeplay has involved running Kokkos with SYCL on Nvidia hardware with Ampere architecture, hence the flag:
 ```
       -DKokkos_ARCH_AMPERE80=ON \
 ```
-represents CUDA's Ampere architecture (SM_80).
+This flag is not strictly necessary, but it enables Ahead of Time (AoT) compilation, which can give a significant performance gain when building large projects built on Kokkos.
+You should modify the cmake command for your GPU arch.
 
 
 
