@@ -75,6 +75,13 @@ This demonstrates using SYCL's `host_task` for CUDA interoperability, calling CU
 
 This example combines the MPI and SGEMM Interop examples to distribute a matrix multiplication problem between MPI ranks.
 
+[Kokkos](examples/kokkos)
+--------------------------------------------
+
+[Kokkos](https://github.com/kokkos/kokkos) is a middle-layer for scientific computing which features a SYCL backend. This example 
+shows a small Kokkos test case (vector-matrix-vector multiplication), adapted from a test case in the Kokkos repo; 
+there is no SYCL code in the example, but it includes scripts to build Kokkos with SYCL support.
+
 [Hashing Algorithms](examples/hashing)
 --------------------------------------------
 
