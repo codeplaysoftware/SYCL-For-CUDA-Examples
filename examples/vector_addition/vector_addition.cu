@@ -1,90 +1,120 @@
-// Original source reproduced unmodified here from: 
-// https://github.com/olcf/vector_addition_tutorials/blob/master/CUDA/vecAdd.cu
+// Copyright (c) 2022 Tom Papatheodore
 
-#include <math.h>
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
 
-// CUDA kernel. Each thread takes care of one element of c
-__global__ void vecAdd(double *a, double *b, double *c, int n) {
-  // Get our global thread ID
-  int id = blockIdx.x * blockDim.x + threadIdx.x;
+// Macro for checking errors in GPU API calls
+#define gpuErrorCheck(call)                                                                  \
+do{                                                                                          \
+    cudaError_t gpuErr = call;                                                               \
+    if(cudaSuccess != gpuErr){                                                               \
+        printf("GPU Error - %s:%d: '%s'\n", __FILE__, __LINE__, cudaGetErrorString(gpuErr)); \
+        exit(1);                                                                             \
+    }                                                                                        \
+}while(0)
 
-  // Make sure we do not go out of bounds
-  if (id < n)
-    c[id] = a[id] + b[id];
+// Size of array
+#define N 1048576
+
+// Kernel
+__global__ void vector_addition(double *a, double *b, double *c)
+{
+    int id = blockDim.x * blockIdx.x + threadIdx.x;
+    if(id < N) c[id] = a[id] + b[id];
 }
 
-int main(int argc, char *argv[]) {
-  // Size of vectors
-  int n = 100000;
+// Main program
+int main()
+{
+    // Number of bytes to allocate for N doubles
+    size_t bytes = N*sizeof(double);
 
-  // Host input vectors
-  double *h_a;
-  double *h_b;
-  // Host output vector
-  double *h_c;
+    // Allocate memory for arrays A, B, and C on host
+    double *A = (double*)malloc(bytes);
+    double *B = (double*)malloc(bytes);
+    double *C = (double*)malloc(bytes);
 
-  // Device input vectors
-  double *d_a;
-  double *d_b;
-  // Device output vector
-  double *d_c;
+    // Allocate memory for arrays d_A, d_B, and d_C on device
+    double *d_A, *d_B, *d_C;
+    gpuErrorCheck( cudaMalloc(&d_A, bytes) );	
+    gpuErrorCheck( cudaMalloc(&d_B, bytes) );
+    gpuErrorCheck( cudaMalloc(&d_C, bytes) );
 
-  // Size, in bytes, of each vector
-  size_t bytes = n * sizeof(double);
+    // Fill host arrays A, B, and C
+    for(int i=0; i<N; i++)
+    {
+        A[i] = 1.0;
+        B[i] = 2.0;
+        C[i] = 0.0;
+    }
 
-  // Allocate memory for each vector on host
-  h_a = (double *)malloc(bytes);
-  h_b = (double *)malloc(bytes);
-  h_c = (double *)malloc(bytes);
+    // Copy data from host arrays A and B to device arrays d_A and d_B
+    gpuErrorCheck( cudaMemcpy(d_A, A, bytes, cudaMemcpyHostToDevice) );
+    gpuErrorCheck( cudaMemcpy(d_B, B, bytes, cudaMemcpyHostToDevice) );
 
-  // Allocate memory for each vector on GPU
-  cudaMalloc(&d_a, bytes);
-  cudaMalloc(&d_b, bytes);
-  cudaMalloc(&d_c, bytes);
+    // Set execution configuration parameters
+    //      thr_per_blk: number of GPU threads per grid block
+    //      blk_in_grid: number of blocks in grid
+    int thr_per_blk = 128;
+    int blk_in_grid = ceil( float(N) / thr_per_blk );
 
-  // Initialize vectors on host
-  for (int i = 0; i < n; i++) {
-    h_a[i] = sin(i) * sin(i);
-    h_b[i] = cos(i) * cos(i);
-  }
+    // Launch kernel
+    vector_addition<<<blk_in_grid, thr_per_blk>>>(d_A, d_B, d_C);
 
-  // Copy host vectors to device
-  cudaMemcpy(d_a, h_a, bytes, cudaMemcpyHostToDevice);
-  cudaMemcpy(d_b, h_b, bytes, cudaMemcpyHostToDevice);
+    // Check for synchronous errors during kernel launch (e.g. invalid execution configuration paramters)
+    gpuErrorCheck( cudaGetLastError() );
 
-  int blockSize, gridSize;
+    // Check for asynchronous errors during GPU execution (after control is returned to CPU)
+    gpuErrorCheck( cudaDeviceSynchronize() );
 
-  // Number of threads in each thread block
-  blockSize = 1024;
+    // Copy data from device array d_C to host array C
+    gpuErrorCheck( cudaMemcpy(C, d_C, bytes, cudaMemcpyDeviceToHost) );
 
-  // Number of thread blocks in grid
-  gridSize = (int)ceil((float)n / blockSize);
+    // Verify results
+    double tolerance = 1.0e-14;
+    for(int i=0; i<N; i++)
+    {
+        if( fabs(C[i] - 3.0) > tolerance )
+        { 
+            printf("Error: value of C[%d] = %f instead of 3.0\n", i, C[i]);
+            exit(1);
+        }
+    }	
 
-  // Execute the kernel
-  vecAdd<<<gridSize, blockSize>>>(d_a, d_b, d_c, n);
+    // Free CPU memory
+    free(A);
+    free(B);
+    free(C);
 
-  // Copy array back to host
-  cudaMemcpy(h_c, d_c, bytes, cudaMemcpyDeviceToHost);
+    // Free GPU memory
+    gpuErrorCheck( cudaFree(d_A) );
+    gpuErrorCheck( cudaFree(d_B) );
+    gpuErrorCheck( cudaFree(d_C) );
 
-  // Sum up vector c and print result divided by n, this should equal 1 within
-  // error
-  double sum = 0;
-  for (int i = 0; i < n; i++)
-    sum += h_c[i];
-  std::cout << "Sum is : " << sum << std::endl;
+    printf("\n---------------------------\n");
+    printf("__SUCCESS__\n");
+    printf("---------------------------\n");
+    printf("N                 = %d\n", N);
+    printf("Threads Per Block = %d\n", thr_per_blk);
+    printf("Blocks In Grid    = %d\n", blk_in_grid);
+    printf("---------------------------\n\n");
 
-  // Release device memory
-  cudaFree(d_a);
-  cudaFree(d_b);
-  cudaFree(d_c);
-
-  // Release host memory
-  free(h_a);
-  free(h_b);
-  free(h_c);
-
-  return 0;
+    return 0;
 }
