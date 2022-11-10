@@ -24,18 +24,6 @@
 
 #include <CL/sycl.hpp>
 
-class CUDASelector : public sycl::device_selector {
-public:
-  int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
-      std::cout << " CUDA device found " << std::endl;
-      return 1;
-    } else{
-      return -1;
-    }
-  }
-};
-
 int main(int argc, char *argv[]) {
   constexpr const size_t N = 100000;
   const sycl::range VecSize{N};
@@ -56,7 +44,15 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  sycl::queue myQueue{CUDASelector()};
+  auto CUDASelector = [](sycl::device const &dev) {
+    if (dev.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda) {
+      std::cout << " CUDA device found " << std::endl;
+      return 1;
+    } else {
+      return -1;
+    }
+  };
+  sycl::queue myQueue{CUDASelector};
 
   // Command Group creation
   auto cg = [&](sycl::handler &h) {
