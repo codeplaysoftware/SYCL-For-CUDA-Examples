@@ -44,15 +44,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  auto CUDASelector = [](sycl::device const &dev)
-  {
-    if (dev.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda)
-    {
+  auto CUDASelector = [](sycl::device const &dev) {
+    if (dev.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda) {
       std::cout << " CUDA device found " << std::endl;
       return 1;
-    }
-    else
-    {
+    } else {
       return -1;
     }
   };
