@@ -24,23 +24,20 @@
 
 #include <CL/sycl.hpp>
 
-class CUDASelector : public sycl::device_selector {
-public:
-  int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
-      std::cout << " CUDA device found " << std::endl;
-      return 1;
-    } else{
-      return -1;
-    }
+int CUDASelector(sycl::device const &dev) {
+  if (dev.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda) {
+    std::cout << " CUDA device found " << std::endl;
+    return 1;
+  } else {
+    return -1;
   }
-};
+}
 
 int main(int argc, char *argv[]) {
   constexpr const size_t n = 100000;
 
   // Create a sycl queue with our CUDASelector
-  sycl::queue myQueue{CUDASelector()};
+  sycl::queue myQueue{CUDASelector};
 
   // Host input vectors
   double *h_a;
