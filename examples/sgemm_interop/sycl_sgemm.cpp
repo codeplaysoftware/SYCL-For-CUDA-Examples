@@ -25,11 +25,10 @@
 #include <iostream>
 #include <vector>
 
-#include <CL/sycl.hpp>
-#include <CL/sycl/backend/cuda.hpp>
+#include <sycl/sycl.hpp>
 
-#include <cublas_v2.h>
 #include <cuda.h>
+#include <cublas_v2.h>
 
 #define CHECK_ERROR(FUNC) checkCudaErrorMsg(FUNC, " " #FUNC)
 
@@ -47,12 +46,14 @@ void inline checkCudaErrorMsg(cudaError status, const char *msg) {
   }
 }
 
-void inline checkCudaErrorMsg(CUresult status, const char *msg) {
+/*
+ * void inline checkCudaErrorMsg(CUresult status, const char *msg) {
   if (status != CUDA_SUCCESS) {
     std::cout << "ERROR CUDA: " << msg << " - " << status << std::endl;
     exit(EXIT_FAILURE);
   }
 }
+*/
 
 class CUDASelector : public sycl::device_selector {
 public:
@@ -104,7 +105,6 @@ int main() {
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
       h.host_task([=](sycl::interop_handle ih) {
-        cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
         auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
         cublasSetStream(handle, cuStream);
         auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
