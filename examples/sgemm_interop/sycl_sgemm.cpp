@@ -27,8 +27,8 @@
 
 #include <sycl/sycl.hpp>
 
-#include <cuda.h>
 #include <cublas_v2.h>
+#include <cuda.h>
 
 #define CHECK_ERROR(FUNC) checkCudaErrorMsg(FUNC, " " #FUNC)
 
@@ -68,7 +68,9 @@ int main() {
   // B is a matrix fill with 1
   std::fill(std::begin(h_B), std::end(h_B), 1.0f);
 
-  sycl::queue q{[](auto& d) { return (d.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda); }};
+  sycl::queue q{[](auto &d) {
+    return (d.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda);
+  }};
 
   cublasHandle_t handle;
   CHECK_ERROR(cublasCreate(&handle));
@@ -86,9 +88,12 @@ int main() {
       h.host_task([=](sycl::interop_handle ih) {
         auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
         cublasSetStream(handle, cuStream);
-        auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
-        auto cuB = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_B));
-        auto cuC = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_C));
+        auto cuA = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
+        auto cuB = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_B));
+        auto cuC = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_C));
 
         CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                                 WIDTH, &ALPHA, cuA, WIDTH, cuB, WIDTH, &BETA,
