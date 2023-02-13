@@ -46,24 +46,6 @@ void inline checkCudaErrorMsg(cudaError status, const char *msg) {
   }
 }
 
-/* void inline checkCudaErrorMsg(CUresult status, const char *msg) {
-  if (status != CUDA_SUCCESS) {
-    std::cout << "ERROR CUDA: " << msg << " - " << status << std::endl;
-    exit(EXIT_FAILURE);
-  }
-} */
-
-class CUDASelector : public sycl::device_selector {
-public:
-  int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
-      std::cout << " CUDA device found " << std::endl;
-      return 1;
-    } else{
-      return -1;
-    }
-  }
-};
 
 int main() {
   using namespace sycl;
@@ -87,7 +69,7 @@ int main() {
   // B is a matrix fill with 1
   std::fill(std::begin(h_B), std::end(h_B), 1.0f);
 
-  sycl::queue q{CUDASelector()};
+  sycl::queue q{[](auto& d) { return (d.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda); }};
 
   // Allocate memory on the device
   float* d_A = sycl::malloc_device<float>(WIDTH*HEIGHT,q);
