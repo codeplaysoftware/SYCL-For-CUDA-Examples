@@ -34,9 +34,6 @@ int main(int argc, char *argv[]) {
 
   // Initialize input data
   {
-    const auto dwrite_t = sycl::write_only;
-
-
     sycl::host_accessor h_a{bufA, sycl::write_only};
     sycl::host_accessor h_b{bufB, sycl::write_only};
 
@@ -65,8 +62,7 @@ int main(int argc, char *argv[]) {
     auto b = bufB.get_access<read_t>(h);
     auto c = bufC.get_access<write_t>(h);
 
-    h.parallel_for(VecSize,
-                   [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
+    h.parallel_for(VecSize, [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
   };
 
   myQueue.submit(cg);
