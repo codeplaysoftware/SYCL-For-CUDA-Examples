@@ -86,6 +86,8 @@ int main() {
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
       h.host_task([=](sycl::interop_handle ih) {
+        // Set the correct cuda context & stream
+	cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
         auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
         cublasSetStream(handle, cuStream);
         auto cuA = reinterpret_cast<float *>(
