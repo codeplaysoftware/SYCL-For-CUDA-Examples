@@ -34,10 +34,9 @@ int main(int argc, char *argv[]) {
 
   // Initialize input data
   {
-    const auto dwrite_t = sycl::access::mode::discard_write;
+    sycl::host_accessor h_a{bufA, sycl::write_only};
+    sycl::host_accessor h_b{bufB, sycl::write_only};
 
-    auto h_a = bufA.get_access<dwrite_t>();
-    auto h_b = bufB.get_access<dwrite_t>();
     for (int i = 0; i < N; i++) {
       h_a[i] = sin(i) * sin(i);
       h_b[i] = cos(i) * cos(i);
@@ -63,15 +62,14 @@ int main(int argc, char *argv[]) {
     auto b = bufB.get_access<read_t>(h);
     auto c = bufC.get_access<write_t>(h);
 
-    h.parallel_for(VecSize,
-                   [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
+    h.parallel_for(VecSize, [=](sycl::id<1> i) { c[i] = a[i] + b[i]; });
   };
 
   myQueue.submit(cg);
 
   {
-    const auto read_t = sycl::access::mode::read;
-    auto h_c = bufC.get_access<read_t>();
+    sycl::host_accessor h_c{bufC, sycl::read_only};
+
     double sum = 0.0f;
     for (int i = 0; i < N; i++) {
       sum += h_c[i];

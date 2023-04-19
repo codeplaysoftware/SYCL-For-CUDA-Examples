@@ -7,9 +7,6 @@ to highlight how to build an application with SYCL for CUDA using DPC++ support,
 for which an example CMakefile is provided. For detailed documentation on how to
 migrate from CUDA to SYCL, see [SYCL For CUDA Developers](https://developer.codeplay.com/products/computecpp/ce/guides/sycl-for-cuda-developers).
 
-Note currently the CUDA backend does not support the [USM](https://github.com/intel/llvm/blob/sycl/sycl/doc/extensions/USM/USM.adoc) extension, so we use
-`sycl::buffer` and `sycl::accessors` instead.
-
 Pre-requisites
 ---------------
 

@@ -25,8 +25,7 @@
 #include <iostream>
 #include <vector>
 
-#include <CL/sycl.hpp>
-#include <CL/sycl/backend/cuda.hpp>
+#include <sycl/sycl.hpp>
 
 #include <cublas_v2.h>
 #include <cuda.h>
@@ -46,25 +45,6 @@ void inline checkCudaErrorMsg(cudaError status, const char *msg) {
     exit(EXIT_FAILURE);
   }
 }
-
-void inline checkCudaErrorMsg(CUresult status, const char *msg) {
-  if (status != CUDA_SUCCESS) {
-    std::cout << "ERROR CUDA: " << msg << " - " << status << std::endl;
-    exit(EXIT_FAILURE);
-  }
-}
-
-class CUDASelector : public sycl::device_selector {
-public:
-  int operator()(const sycl::device &device) const override {
-    if(device.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda){
-      std::cout << " CUDA device found " << std::endl;
-      return 1;
-    } else{
-      return -1;
-    }
-  }
-};
 
 int main() {
   using namespace sycl;
@@ -88,7 +68,9 @@ int main() {
   // B is a matrix fill with 1
   std::fill(std::begin(h_B), std::end(h_B), 1.0f);
 
-  sycl::queue q{CUDASelector()};
+  sycl::queue q{[](auto &d) {
+    return (d.get_platform().get_backend() == sycl::backend::ext_oneapi_cuda);
+  }};
 
   cublasHandle_t handle;
   CHECK_ERROR(cublasCreate(&handle));
@@ -104,12 +86,16 @@ int main() {
       auto d_C = b_C.get_access<sycl::access::mode::write>(h);
 
       h.host_task([=](sycl::interop_handle ih) {
-        cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
+        // Set the correct cuda context & stream
+	cuCtxSetCurrent(ih.get_native_context<backend::ext_oneapi_cuda>());
         auto cuStream = ih.get_native_queue<backend::ext_oneapi_cuda>();
         cublasSetStream(handle, cuStream);
-        auto cuA = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
-        auto cuB = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_B));
-        auto cuC = reinterpret_cast<float *>(ih.get_native_mem<backend::ext_oneapi_cuda>(d_C));
+        auto cuA = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_A));
+        auto cuB = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_B));
+        auto cuC = reinterpret_cast<float *>(
+            ih.get_native_mem<backend::ext_oneapi_cuda>(d_C));
 
         CHECK_ERROR(cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, WIDTH, HEIGHT,
                                 WIDTH, &ALPHA, cuA, WIDTH, cuB, WIDTH, &BETA,
