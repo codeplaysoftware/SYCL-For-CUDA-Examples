@@ -49,11 +49,6 @@ an equivalent implementation in SYCL for CUDA. The aim of the example is also
 to highlight how to build an application with SYCL for CUDA using DPC++ support, 
 for which an example CMakefile is provided.
 
-[CUDA Interop](examples/cuda_interop)
---------------------------------------------
-
-In this example, we re-use the trivial SYCL kernel we used in Vector Addition, but instead of writing the SYCL variant, we will keep the original CUDA kernel, only replacing the CUDA Runtime calls with the SYCL API.
-
 [Fortran Interface](examples/fortran_interface)
 --------------------------------------------
 
