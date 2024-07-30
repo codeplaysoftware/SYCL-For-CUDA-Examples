@@ -1,6 +1,8 @@
 SYCL for CUDA examples
 ==========================
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/codeplaysoftware/SYCL-For-CUDA-Examples/badge)](https://scorecard.dev/viewer/?uri=github.com/codeplaysoftware/SYCL-For-CUDA-Examples)
+
 This repository contains examples that demonstrate how to use the CUDA backend
 in SYCL.
 
@@ -81,3 +83,4 @@ there is no SYCL code in the example, but it includes scripts to build Kokkos wi
 --------------------------------------------
 
 This example is slightly different - it benchmarks a series of hashing algorithms.
+
